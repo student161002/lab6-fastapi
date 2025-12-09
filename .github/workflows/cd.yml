@@ -25,8 +25,8 @@ jobs:
         docker push $IMAGE
 
     - name: Login to GHCR
-      run: echo "${{ secrets.GITHUB_TOKEN }}" |
-           docker login ghcr.io -u student161002 --password-stdin
+      run: echo "${{ secrets.PAT }}" | docker login ghcr.io -u student161002 --password-stdin
+
 
     - name: Build and push
       run: |
