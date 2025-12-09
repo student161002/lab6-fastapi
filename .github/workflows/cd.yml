@@ -13,14 +13,17 @@ jobs:
     steps:
     - uses: actions/checkout@v4
 
-    - name: Debug - show authenticated user
+    - name: Login to GHCR with PAT
       env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        PAT: ${{ secrets.GHCR_PAT }}
+      run: echo "$PAT" | docker login ghcr.io -u student161002 --password-stdin
+    
+    - name: Build and push with PAT
       run: |
-        echo "Whoami via API:"
-        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
-        echo "List user's packages (may need scope):"
-        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user/packages
+        IMAGE=ghcr.io/student161002/python-app:latest
+        docker build -t $IMAGE .
+        docker push $IMAGE
+
     - name: Login to GHCR
       run: echo "${{ secrets.GITHUB_TOKEN }}" |
            docker login ghcr.io -u student161002 --password-stdin
