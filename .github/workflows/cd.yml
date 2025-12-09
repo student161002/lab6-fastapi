@@ -17,12 +17,10 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
-        apt-get update && apt-get install -y jq
         echo "Whoami via API:"
-        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user | jq -r '.login, .id'
+        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user
         echo "List user's packages (may need scope):"
-        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user/packages | jq -r '.[]?.name // "no packages or no perms"'
-
+        curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user/packages
     - name: Login to GHCR
       run: echo "${{ secrets.GITHUB_TOKEN }}" |
            docker login ghcr.io -u student161002 --password-stdin
