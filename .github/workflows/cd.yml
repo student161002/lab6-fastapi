@@ -17,6 +17,7 @@ jobs:
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
+        apt-get update && apt-get install -y jq
         echo "Whoami via API:"
         curl -s -H "Authorization: Bearer $GITHUB_TOKEN" https://api.github.com/user | jq -r '.login, .id'
         echo "List user's packages (may need scope):"
